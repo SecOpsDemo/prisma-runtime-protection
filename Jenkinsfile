@@ -18,7 +18,7 @@ properties([
   buildDiscarder(logRotator(daysToKeepStr: "60", numToKeepStr: "30"))
 ])
 podTemplate(label: label, containers: [
-  containerTemplate(name: "builder", image: "opsnowtools/valve-builder:v0.2.36", command: "cat", ttyEnabled: true, alwaysPullImage: true),
+  containerTemplate(name: "builder", image: "opsnowtools/valve-builder:v0.2.38", command: "cat", ttyEnabled: true, alwaysPullImage: true),
   containerTemplate(name: "sam", image: "pahud/aws-sam-cli:0.53.0", command: "cat", ttyEnabled: true)
 ], volumes: [
   hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock"),
