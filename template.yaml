@@ -23,6 +23,18 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  SubProcessFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: subprocess/
+      Handler: app.lambda_handler
+      Runtime: python3.7
+      Events:
+        SubProcess:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /subproc
+            Method: post
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -37,3 +49,12 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+  SubProcessApi:
+    Description: "API Gateway endpoint URL for Prod stage for SubProcess function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/subproc/"
+  SubProcessFunction:
+    Description: "SubProcess Lambda Function ARN"
+    Value: !GetAtt SubProcessFunction.Arn
+  SubProcessFunctionIamRole:
+    Description: "Implicit IAM Role created for SubProcess function"
+    Value: !GetAtt SubProcessFunctionRole.Arn
