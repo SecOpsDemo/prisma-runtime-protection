@@ -81,14 +81,14 @@ podTemplate(label: label, containers: [
         
         prismaCloudPublish resultsFilePattern: 'prisma-cloud-scan-results.json'
       }
-      stage('Scan Image - Prisma Cloud') {
+      stage('Copy to S3 Bucket') {
         container("builder") {
           try {
             envAWS("here");
             sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
-            butler.success(SLACK_TOKEN_DEV, "Build")
+            butler.success(SLACK_TOKEN_DEV, "Push")
           } catch (e) {
-            butler.failure(SLACK_TOKEN_DEV, "Build")
+            butler.failure(SLACK_TOKEN_DEV, "Push")
             throw e
           }
         }
